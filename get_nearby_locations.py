@@ -6,7 +6,7 @@ from flask import Flask
 
 # Run a flask endpoint
 app = Flask(__name__)
-HOST_SPARKBOT_FLASK = os.environ['HOST_SPARKBOT_FLASK']
+flask_endpoint = os.environ['HOST_SPARKBOT_FLASK'] + "/post_result"
 
 @app.route('/')
 def confirm_service():
@@ -17,14 +17,14 @@ def getnearby():
     locations = json.loads(get_nearby_locations())
     result = package_nearby_locations(locations)
     request_params = {'message' : result}
-    r = requests.post(HOST_SPARKBOT_FLASK, params=request_params)
+    r = requests.post(flask_endpoint, params=request_params)
     return "Ok"
 
 def get_nearby_locations():
     API_KEY = os.environ['API_KEY']
     location = "-33.8670522,151.1957362"
-    endpoint = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + location + "&radius=500&type=restaurant&key=" + API_KEY
-    r = requests.get(url=endpoint)
+    gmaps_endpoint = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + location + "&radius=500&type=restaurant&key=" + API_KEY
+    r = requests.get(url=gmaps_endpoint)
     return r.text
 
 def package_nearby_locations(message):
