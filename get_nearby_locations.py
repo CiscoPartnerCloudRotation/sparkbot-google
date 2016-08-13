@@ -6,7 +6,7 @@ from flask import Flask
 
 # Run a flask endpoint
 app = Flask(__name__)
-SPARK_SVC_ENDPOINT = os.environ['SPARK_SVC_ENDPOINT']
+HOST_SPARKBOT_FLASK = os.environ['HOST_SPARKBOT_FLASK']
 
 @app.route('/')
 def confirm_service():
@@ -17,7 +17,7 @@ def getnearby():
     locations = json.loads(get_nearby_locations())
     result = package_nearby_locations(locations)
     request_params = {'message' : result}
-    r = requests.post(SPARK_SVC_ENDPOINT, params=request_params)
+    r = requests.post(HOST_SPARKBOT_FLASK, params=request_params)
     return "Ok"
 
 def get_nearby_locations():
